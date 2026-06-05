@@ -170,21 +170,7 @@ function App() {
           </button>
         </div>
 
-        {/* User Profile */}
-        <div className="p-6">
-          <div className="flex items-center gap-4 bg-slate-800/40 p-4 rounded-2xl border border-slate-700/50">
-            <div className="relative">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-xl shadow-lg border-2 border-slate-800">
-                HB
-              </div>
-              <div className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 border-2 border-slate-800 rounded-full"></div>
-            </div>
-            <div>
-              <p className="text-sm font-bold text-white">Hasbi Baihaqi</p>
-              <p className="text-xs text-slate-400 font-medium">Administrator</p>
-            </div>
-          </div>
-        </div>
+
 
         {/* Sidebar Navigation */}
         <nav className="flex-1 overflow-y-auto px-4 py-2 custom-scrollbar">
