@@ -84,6 +84,11 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [showConfigModal, setShowConfigModal] = useState(false);
+  const [sysConfig, setSysConfig] = useState({
+    render3D: true,
+    autoRefresh: false
+  });
 
   const [params, setParams] = useState({
     hc_variant: 'simple',
@@ -100,6 +105,9 @@ function App() {
   const handleParamChange = (e) => {
     const { name, value } = e.target;
     setParams(prev => ({ ...prev, [name]: value }));
+    if (sysConfig.autoRefresh) {
+      setResult(null);
+    }
   };
 
   const runSimulation = async () => {
@@ -184,7 +192,10 @@ function App() {
           <div className="px-2 text-[11px] font-bold text-slate-500 uppercase tracking-widest mt-8 mb-3">
             System
           </div>
-          <button className="w-full flex items-center gap-3 px-4 py-3.5 my-1 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition-all duration-300 border border-transparent">
+          <button 
+            onClick={() => setShowConfigModal(true)}
+            className="w-full flex items-center gap-3 px-4 py-3.5 my-1 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition-all duration-300 border border-transparent"
+          >
             <Settings size={20} className="text-slate-500" /> System Config
           </button>
         </nav>
@@ -394,35 +405,88 @@ function App() {
                 </div>
 
                 {/* Grafik 3D Lanskap */}
-                <div className="bg-slate-900/40 backdrop-blur-xl rounded-2xl border border-slate-700/50 shadow-xl overflow-hidden relative">
-                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-indigo-500"></div>
-                  <div className="p-6 border-b border-slate-700/50">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center border border-slate-700">
-                        <Mountain size={16} className="text-purple-400" />
+                {sysConfig.render3D && (
+                  <div className="bg-slate-900/40 backdrop-blur-xl rounded-2xl border border-slate-700/50 shadow-xl overflow-hidden relative">
+                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-indigo-500"></div>
+                    <div className="p-6 border-b border-slate-700/50">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center border border-slate-700">
+                          <Mountain size={16} className="text-purple-400" />
+                        </div>
+                        <h3 className="font-bold text-white tracking-wide">3D Landscape Topology (Rastrigin)</h3>
                       </div>
-                      <h3 className="font-bold text-white tracking-wide">3D Landscape Topology (Rastrigin)</h3>
+                    </div>
+                    <div className="p-6">
+                      {result ? (
+                        <div className="rounded-xl border border-slate-700/50 overflow-hidden bg-slate-950/50">
+                          <Plotly3D surfaceData={result.surface} historyData={result.history} />
+                        </div>
+                      ) : (
+                        <div className="h-[400px] flex flex-col items-center justify-center bg-slate-800/30 border border-dashed border-slate-700 rounded-xl text-slate-500">
+                          <Mountain size={48} className="text-slate-600 mb-4" />
+                          <p>3D visualization map is not available yet.</p>
+                        </div>
+                      )}
                     </div>
                   </div>
-                  <div className="p-6">
-                    {result ? (
-                      <div className="rounded-xl border border-slate-700/50 overflow-hidden bg-slate-950/50">
-                        <Plotly3D surfaceData={result.surface} historyData={result.history} />
-                      </div>
-                    ) : (
-                      <div className="h-[400px] flex flex-col items-center justify-center bg-slate-800/30 border border-dashed border-slate-700 rounded-xl text-slate-500">
-                        <Mountain size={48} className="text-slate-600 mb-4" />
-                        <p>3D visualization map is not available yet.</p>
-                      </div>
-                    )}
-                  </div>
-                </div>
+                )}
 
               </div>
             </div>
           </div>
         </main>
       </div>
+    {/* System Config Modal */}
+      {showConfigModal && (
+        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-slate-900 border border-slate-700/50 rounded-2xl w-full max-w-md shadow-2xl overflow-hidden relative">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-blue-500"></div>
+            <div className="p-6 border-b border-slate-700/50 flex justify-between items-center bg-slate-900/50">
+              <h3 className="font-bold text-white flex items-center gap-2">
+                <Settings size={18} className="text-cyan-400" />
+                System Configuration
+              </h3>
+              <button onClick={() => setShowConfigModal(false)} className="text-slate-400 hover:text-white transition-colors">
+                <X size={20} />
+              </button>
+            </div>
+            <div className="p-6 space-y-6">
+              
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="text-sm font-semibold text-slate-200">Render 3D Landscape</h4>
+                  <p className="text-xs text-slate-400 mt-1">Enable Plotly 3D rendering (heavy performance)</p>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" className="sr-only peer" checked={sysConfig.render3D} onChange={(e) => setSysConfig({...sysConfig, render3D: e.target.checked})} />
+                  <div className="w-11 h-6 bg-slate-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-cyan-500"></div>
+                </label>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="text-sm font-semibold text-slate-200">Auto Refresh Chart</h4>
+                  <p className="text-xs text-slate-400 mt-1">Automatically clear chart on parameter change</p>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" className="sr-only peer" checked={sysConfig.autoRefresh} onChange={(e) => setSysConfig({...sysConfig, autoRefresh: e.target.checked})} />
+                  <div className="w-11 h-6 bg-slate-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-cyan-500"></div>
+                </label>
+              </div>
+
+            </div>
+            <div className="p-5 bg-slate-800/50 border-t border-slate-700/50 flex justify-end">
+              <button 
+                onClick={() => setShowConfigModal(false)}
+                className="px-6 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white text-sm font-semibold rounded-xl shadow-lg transition-all"
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
