@@ -1,0 +1,23 @@
+# Git
+.git
+.gitignore
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Build outputs
+frontend/dist/
+frontend/build/
+backend/static/
+
+# Mac
+.DS_Store
