@@ -25,7 +25,7 @@ const ConvergenceChart = ({ historyData, algorithmName }) => {
   // 1. PENGAMANAN: Mencegah blank screen jika data kosong
   if (!historyData || !Array.isArray(historyData) || historyData.length === 0) {
     return (
-      <div className="h-[300px] flex items-center justify-center text-gray-400 bg-gray-50 border border-dashed border-gray-300 rounded">
+      <div className="h-[300px] flex flex-col items-center justify-center bg-slate-800/30 border border-dashed border-slate-700 rounded-xl text-slate-500">
         Menunggu data konvergensi dari backend...
       </div>
     );

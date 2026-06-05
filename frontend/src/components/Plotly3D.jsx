@@ -52,12 +52,13 @@ const Plotly3D = ({ surfaceData, historyData }) => {
           autosize: true,
           margin: { l: 0, r: 0, b: 0, t: 0 }, // Hilangkan margin berlebih
           scene: {
-            xaxis: { title: 'Sumbu X' },
-            yaxis: { title: 'Sumbu Y' },
-            zaxis: { title: 'Nilai Fitness' }
+            xaxis: { title: 'Sumbu X', color: '#cbd5e1' },
+            yaxis: { title: 'Sumbu Y', color: '#cbd5e1' },
+            zaxis: { title: 'Nilai Fitness', color: '#cbd5e1' }
           },
           paper_bgcolor: 'transparent',
-          plot_bgcolor: 'transparent'
+          plot_bgcolor: 'transparent',
+          font: { color: '#cbd5e1' }
         }}
         useResizeHandler={true}
         style={{ width: '100%', height: '400px' }}
