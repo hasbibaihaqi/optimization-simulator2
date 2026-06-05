@@ -46,7 +46,7 @@ def run_hill_climbing():
         'algorithm': 'Hill Climbing',
         'best_position': best_pos.tolist(),
         'best_energy': float(best_energy),
-        'history': [float(h) for h in history],
+        'history': history,
         'execution_time': elapsed,
         'surface': surface
     })
@@ -69,7 +69,7 @@ def run_simulated_annealing():
         'algorithm': 'Simulated Annealing',
         'best_position': best_pos.tolist(),
         'best_energy': float(best_energy),
-        'history': [float(h) for h in history],
+        'history': history,
         'execution_time': elapsed,
         'surface': surface
     })
@@ -98,7 +98,7 @@ def run_genetic_algorithm():
         'algorithm': 'Genetic Algorithm',
         'best_position': best_pos.tolist(),
         'best_energy': float(best_energy),
-        'history': [float(h) for h in history],
+        'history': history,
         'execution_time': elapsed,
         'surface': surface
     })

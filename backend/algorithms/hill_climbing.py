@@ -13,7 +13,7 @@ def hill_climbing(func, variant='simple', max_iter=500, step_size=0.1, bounds=(-
     # Random initialization within bounds
     current_pos = np.random.uniform(bounds[0], bounds[1], dim)
     current_energy = func(current_pos)
-    history = [current_energy]
+    history = [{'current_state': current_pos.tolist(), 'current_energy': float(current_energy)}]
 
     directions = np.eye(dim)
 
@@ -64,7 +64,7 @@ def hill_climbing(func, variant='simple', max_iter=500, step_size=0.1, bounds=(-
                 current_energy = neighbor_energy
                 moved = True
 
-        history.append(current_energy)
+        history.append({'current_state': current_pos.tolist(), 'current_energy': float(current_energy)})
 
         # Stop early if no improvement (for simple and steepest)
         if not moved and variant in ['simple', 'steepest']:

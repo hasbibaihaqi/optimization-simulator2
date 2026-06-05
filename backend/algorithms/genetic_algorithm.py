@@ -10,7 +10,8 @@ def genetic_algorithm(func, pop_size=50, generations=100, mutation_rate=0.1,
     # Initialize population
     population = np.random.uniform(bounds[0], bounds[1], (pop_size, dim))
     fitness = np.array([func(ind) for ind in population])
-    history = [float(np.min(fitness))]
+    best_initial_idx = np.argmin(fitness)
+    history = [{'current_state': population[best_initial_idx].tolist(), 'current_energy': float(fitness[best_initial_idx]), 'average_fitness': float(np.mean(fitness))}]
 
     for gen in range(generations):
         new_population = []
@@ -37,7 +38,8 @@ def genetic_algorithm(func, pop_size=50, generations=100, mutation_rate=0.1,
 
         population = np.array(new_population)
         fitness = np.array([func(ind) for ind in population])
-        history.append(float(np.min(fitness)))
+        best_gen_idx = np.argmin(fitness)
+        history.append({'current_state': population[best_gen_idx].tolist(), 'current_energy': float(fitness[best_gen_idx]), 'average_fitness': float(np.mean(fitness))})
 
     best_idx = np.argmin(fitness)
     return population[best_idx], fitness[best_idx], history

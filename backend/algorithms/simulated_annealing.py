@@ -11,7 +11,7 @@ def simulated_annealing(func, t0=100.0, cooling_rate=0.95, max_iter=1000,
     current_energy = func(current_pos)
     best_pos = current_pos.copy()
     best_energy = current_energy
-    history = [current_energy]
+    history = [{'current_state': current_pos.tolist(), 'current_energy': float(current_energy), 'temperature': float(t0), 'accepted_worse': False}]
 
     T = t0
 
@@ -36,7 +36,7 @@ def simulated_annealing(func, t0=100.0, cooling_rate=0.95, max_iter=1000,
             best_pos = current_pos.copy()
             best_energy = current_energy
 
-        history.append(best_energy)
+        history.append({'current_state': current_pos.tolist(), 'current_energy': float(current_energy), 'temperature': float(T), 'accepted_worse': bool(delta_e > 0)})
         T *= cooling_rate
 
     return best_pos, best_energy, history
