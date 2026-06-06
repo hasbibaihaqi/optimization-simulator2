@@ -2,11 +2,14 @@ import numpy as np
 
 
 def simulated_annealing(func, t0=100.0, cooling_rate=0.95, max_iter=1000,
-                         step_size=0.5, bounds=(-5.12, 5.12), dim=2):
+                         step_size=0.5, bounds=(-5.12, 5.12), dim=2, random_seed=42):
     """
     Simulated Annealing optimization algorithm.
     Uses exponential cooling schedule: T = T0 * cooling_rate^k
     """
+    # Fix random seed for reproducibility
+    np.random.seed(random_seed)
+
     current_pos = np.random.uniform(bounds[0], bounds[1], dim)
     current_energy = func(current_pos)
     best_pos = current_pos.copy()

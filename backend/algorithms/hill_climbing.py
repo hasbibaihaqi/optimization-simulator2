@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def hill_climbing(func, variant='simple', max_iter=500, step_size=0.1, bounds=(-5.12, 5.12), dim=2):
+def hill_climbing(func, variant='simple', max_iter=500, step_size=0.1, bounds=(-5.12, 5.12), dim=2, random_seed=42):
     """
     Hill Climbing optimization algorithm.
 
@@ -10,6 +10,9 @@ def hill_climbing(func, variant='simple', max_iter=500, step_size=0.1, bounds=(-
     - 'steepest'   : Steepest-Ascent (best among all neighbors)
     - 'stochastic' : Random neighbor selection
     """
+    # Fix random seed for reproducibility
+    np.random.seed(random_seed)
+
     # Random initialization within bounds
     current_pos = np.random.uniform(bounds[0], bounds[1], dim)
     current_energy = func(current_pos)

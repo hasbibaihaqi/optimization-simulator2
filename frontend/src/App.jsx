@@ -99,7 +99,8 @@ function App() {
     ga_pop_size: 50,
     ga_generations: 100,
     ga_mutation_rate: 0.1,
-    ga_crossover_rate: 0.8
+    ga_crossover_rate: 0.8,
+    random_seed: 42
   });
 
   const handleParamChange = (e) => {
@@ -119,13 +120,13 @@ function App() {
 
     if (activeAlgo === 'hc') {
       endpoint = '/api/optimize/hill-climbing';
-      payload = { variant: params.hc_variant, max_iter: params.hc_max_iter, step_size: params.hc_step_size };
+      payload = { variant: params.hc_variant, max_iter: params.hc_max_iter, step_size: params.hc_step_size, random_seed: params.random_seed };
     } else if (activeAlgo === 'sa') {
       endpoint = '/api/optimize/simulated-annealing';
-      payload = { t0: params.sa_t0, cooling_rate: params.sa_cooling_rate };
+      payload = { t0: params.sa_t0, cooling_rate: params.sa_cooling_rate, random_seed: params.random_seed };
     } else if (activeAlgo === 'ga') {
       endpoint = '/api/optimize/genetic-algorithm';
-      payload = { pop_size: params.ga_pop_size, generations: params.ga_generations, mutation_rate: params.ga_mutation_rate, crossover_rate: params.ga_crossover_rate };
+      payload = { pop_size: params.ga_pop_size, generations: params.ga_generations, mutation_rate: params.ga_mutation_rate, crossover_rate: params.ga_crossover_rate, random_seed: params.random_seed };
     }
 
     try {
@@ -472,6 +473,18 @@ function App() {
                   <input type="checkbox" className="sr-only peer" checked={sysConfig.autoRefresh} onChange={(e) => setSysConfig({...sysConfig, autoRefresh: e.target.checked})} />
                   <div className="w-11 h-6 bg-slate-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-cyan-500"></div>
                 </label>
+              </div>
+
+              <div className="border-t border-slate-700/50 pt-4">
+                <h4 className="text-sm font-semibold text-slate-200 mb-1">Random Seed</h4>
+                <p className="text-xs text-slate-400 mb-3">Fixed seed ensures identical results on all environments</p>
+                <input
+                  type="number"
+                  value={params.random_seed}
+                  onChange={(e) => setParams(prev => ({ ...prev, random_seed: parseInt(e.target.value) || 42 }))}
+                  className="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 transition-all"
+                />
+                <p className="text-xs text-cyan-400/70 mt-2">⚡ Default: 42 — same value as deployed version</p>
               </div>
 
             </div>

@@ -2,11 +2,14 @@ import numpy as np
 
 
 def genetic_algorithm(func, pop_size=50, generations=100, mutation_rate=0.1,
-                       crossover_rate=0.8, bounds=(-5.12, 5.12), dim=2):
+                       crossover_rate=0.8, bounds=(-5.12, 5.12), dim=2, random_seed=42):
     """
     Genetic Algorithm optimization.
     Uses tournament selection, uniform crossover, and Gaussian mutation.
     """
+    # Fix random seed for reproducibility
+    np.random.seed(random_seed)
+
     # Initialize population
     population = np.random.uniform(bounds[0], bounds[1], (pop_size, dim))
     fitness = np.array([func(ind) for ind in population])
