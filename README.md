@@ -264,7 +264,7 @@ POST /api/optimize/genetic-algorithm
 
 > 🌐 **Aplikasi di-deploy di Hugging Face Spaces:**
 >
-> **[👉 Buka Demo Live](optimizationsimulator.my.id)**
+> **[👉 Buka Demo Live]( https://optimizationsimulator.my.id )**
 
 ---
 
