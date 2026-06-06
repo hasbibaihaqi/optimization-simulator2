@@ -27,11 +27,11 @@ const StatCard = ({ bgGradient, borderColor, iconColor, value, title, icon }) =>
 );
 
 // --- Komponen Tombol Menu Sidebar ---
-const SidebarMenu = ({ id, label, icon: Icon, activeAlgo, setActiveAlgo, setResult }) => {
+const SidebarMenu = ({ id, label, icon: Icon, activeAlgo, setActiveAlgo, setResult, closeSidebar }) => {
   const isActive = activeAlgo === id;
   return (
     <button
-      onClick={() => { setActiveAlgo(id); setResult(null); }}
+      onClick={() => { setActiveAlgo(id); setResult(null); if (closeSidebar) closeSidebar(); }}
       className={`w-full flex items-center gap-3 px-4 py-3.5 my-1 rounded-xl text-sm font-medium transition-all duration-300 ${
         isActive 
           ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/10 text-cyan-400 border border-cyan-500/30 shadow-[inset_0_0_20px_rgba(6,182,212,0.15)]' 
@@ -83,7 +83,7 @@ function App() {
   const [activeAlgo, setActiveAlgo] = useState('hc'); 
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showConfigModal, setShowConfigModal] = useState(false);
   const [sysConfig, setSysConfig] = useState({
     render3D: true,
@@ -149,10 +149,10 @@ function App() {
       </div>
 
       {/* Mobile Overlay */}
-      {!sidebarOpen && (
+      {sidebarOpen && (
         <div 
           className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-20 lg:hidden"
-          onClick={() => setSidebarOpen(true)}
+          onClick={() => setSidebarOpen(false)}
         />
       )}
 
@@ -173,7 +173,7 @@ function App() {
             </div>
           </div>
           {/* Mobile close button */}
-          <button onClick={() => setSidebarOpen(true)} className="ml-auto lg:hidden text-slate-400 hover:text-white">
+          <button onClick={() => setSidebarOpen(false)} className="ml-auto lg:hidden text-slate-400 hover:text-white">
             <X size={20} />
           </button>
         </div>
@@ -185,15 +185,15 @@ function App() {
           <div className="px-2 text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-3">
             Algorithms
           </div>
-          <SidebarMenu id="hc" label="Hill Climbing" icon={Mountain} activeAlgo={activeAlgo} setActiveAlgo={setActiveAlgo} setResult={setResult} />
-          <SidebarMenu id="sa" label="Simulated Annealing" icon={Flame} activeAlgo={activeAlgo} setActiveAlgo={setActiveAlgo} setResult={setResult} />
-          <SidebarMenu id="ga" label="Genetic Algorithm" icon={Dna} activeAlgo={activeAlgo} setActiveAlgo={setActiveAlgo} setResult={setResult} />
+          <SidebarMenu id="hc" label="Hill Climbing" icon={Mountain} activeAlgo={activeAlgo} setActiveAlgo={setActiveAlgo} setResult={setResult} closeSidebar={() => setSidebarOpen(false)} />
+          <SidebarMenu id="sa" label="Simulated Annealing" icon={Flame} activeAlgo={activeAlgo} setActiveAlgo={setActiveAlgo} setResult={setResult} closeSidebar={() => setSidebarOpen(false)} />
+          <SidebarMenu id="ga" label="Genetic Algorithm" icon={Dna} activeAlgo={activeAlgo} setActiveAlgo={setActiveAlgo} setResult={setResult} closeSidebar={() => setSidebarOpen(false)} />
           
           <div className="px-2 text-[11px] font-bold text-slate-500 uppercase tracking-widest mt-8 mb-3">
             System
           </div>
           <button 
-            onClick={() => setShowConfigModal(true)}
+            onClick={() => { setShowConfigModal(true); setSidebarOpen(false); }}
             className="w-full flex items-center gap-3 px-4 py-3.5 my-1 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition-all duration-300 border border-transparent"
           >
             <Settings size={20} className="text-slate-500" /> System Config
